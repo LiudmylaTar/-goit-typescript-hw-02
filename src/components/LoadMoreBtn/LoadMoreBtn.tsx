@@ -1,5 +1,9 @@
 import css from "./LoadMoreBtn.module.css";
-const LoadMoreBtn = ({ changePage }) => {
+
+type LoadMoreBtnProps = {
+  changePage: () => void;
+};
+const LoadMoreBtn = ({ changePage }: LoadMoreBtnProps) => {
   return (
     <>
       <button className={css.button} onClick={changePage}>

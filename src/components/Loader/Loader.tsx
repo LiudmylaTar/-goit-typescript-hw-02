@@ -1,7 +1,7 @@
 import { FadeLoader } from "react-spinners";
 import { CSSProperties } from "react";
 
-const override = {
+const override: CSSProperties = {
   display: "block",
   margin: "0 auto",
   borderColor: "red",
@@ -12,7 +12,7 @@ const Loader = () => {
     <div className="sweet-loading">
       <FadeLoader
         cssOverride={override}
-        size={150}
+        height={20}
         color="#36d7b7"
         speedMultiplier={1.5}
         aria-label="Loading Spinner"

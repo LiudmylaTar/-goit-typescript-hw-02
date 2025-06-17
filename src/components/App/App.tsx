@@ -1,40 +1,45 @@
 import { useState, CSSProperties, useEffect } from "react";
-import SearchBar from "./components/SearchBar/SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
-import ImageGallery from "./components/ImageGallery/ImageGallery";
-import { fetchGallery } from "./gallery-api";
-import Loader from "./components/Loader/Loader";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import NotFoundMessage from "./components/NotFoundMessage/NotFoundMessage";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import { fetchGallery } from "../../gallery-api";
+import Loader from "../Loader/Loader";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import NotFoundMessage from "../NotFoundMessage/NotFoundMessage";
 import Modal from "react-modal";
-import ImageModal from "./components/ImageModal/ImageModal";
-import { useToggle } from "./hooks/useToggle";
+import ImageModal from "../ImageModal/ImageModal";
+import { useToggle } from "../../hooks/useToggle";
+import { UnsplashImage } from "./App.type";
 Modal.setAppElement("#root");
 
 function App() {
-  const [images, setImages] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [typeImg, setTypeImg] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [images, setImages] = useState<UnsplashImage[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [typeImg, setTypeImg] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [isLoadingMore, setLoadingMore] = useState(false);
   // For modal windows
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<UnsplashImage | null>(
+    null
+  );
   const { isOpen, open, close } = useToggle();
-  const [modalLoading, setModalLoading] = useState(false);
+  const [modalLoading, setModalLoading] = useState<boolean>(false);
 
-  const searchImg = (inputValue) => {
+  const searchImg = (inputValue: string) => {
     setTypeImg(inputValue);
     setCurrentPage(1);
     setImages([]);
   };
 
   const incrementPage = () => {
+    setLoadingMore(true);
     setCurrentPage(currentPage + 1);
   };
   // For modal windows
-  const handleImageClick = (image) => {
+  const handleImageClick = (image: UnsplashImage) => {
     setModalLoading(true);
     const img = new Image();
     img.src = image.urls.regular;
@@ -66,6 +71,7 @@ function App() {
         setIsError(true);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
     }
     getImages();
@@ -106,9 +112,13 @@ function App() {
           image={selectedImage}
         />
       )}
-      {images.length > 0 && !isLoading && currentPage !== totalPages && (
-        <LoadMoreBtn changePage={incrementPage} />
-      )}
+      {images.length > 0 &&
+        currentPage !== totalPages &&
+        (isLoadingMore ? (
+          <Loader />
+        ) : (
+          <LoadMoreBtn changePage={incrementPage} />
+        ))}
     </>
   );
 }

@@ -1,8 +1,14 @@
 import Modal from "react-modal";
 import css from "./ImageModal.module.css";
 import { IoClose } from "react-icons/io5";
+import { UnsplashImage } from "../App/App.type";
 
-const ImageModal = ({ isOpen, onRequestClose, image }) => {
+interface ImageModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  image: UnsplashImage | null;
+}
+const ImageModal = ({ isOpen, onRequestClose, image }: ImageModalProps) => {
   if (!image) return null;
 
   return (
@@ -18,7 +24,7 @@ const ImageModal = ({ isOpen, onRequestClose, image }) => {
       </button>
       <img
         src={image.urls.regular}
-        alt={image.alt_description}
+        alt={image.alt_description ?? "Image"}
         className={css.largeImg}
       />
     </Modal>

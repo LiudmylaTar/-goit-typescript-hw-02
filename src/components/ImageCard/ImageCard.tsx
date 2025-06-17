@@ -1,10 +1,15 @@
+import { UnsplashImage } from "../App/App.type";
 import css from "./ImageCard.module.css";
-const ImageCard = ({ image, onClick }) => {
+interface ImageCardProps {
+  image: UnsplashImage;
+  onClick: (image: UnsplashImage) => void;
+}
+const ImageCard = ({ image, onClick }: ImageCardProps) => {
   return (
     <div>
       <img
         src={image.urls.small}
-        alt={image.alt_description}
+        alt={image.alt_description ?? ""}
         width="300"
         height="200"
         onClick={() => onClick(image)}

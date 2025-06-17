@@ -1,6 +1,10 @@
 import css from "./NotFoundMessage.module.css";
 
-const NotFoundMessage = ({ text }) => {
+type NotFoundMessageProps = {
+  text: string;
+};
+
+const NotFoundMessage = ({ text }: NotFoundMessageProps) => {
   return <div className={css.message}>{text}</div>;
 };
 
